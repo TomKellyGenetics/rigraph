@@ -1,5 +1,6 @@
-
 language: r
+
+cache: packages
 
 warnings_are_errors: false
 
@@ -34,8 +35,12 @@ r_packages:
   - ape
   - scales
 
-after_success:
-- tools/travis_deploy.sh igraph_*.tar.gz
+jobs:
+  include:
+    - stage: Deploy
+      if: branch = dev AND type != pull_request
+      script: tools/travis_deploy.sh igraph_*.tar.gz
+      r: release
 
 notifications:
   email:
